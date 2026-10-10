@@ -1,0 +1,65 @@
+# =====================================================================
+# Advanced Client Blueprint: Wayland + Weston + WayVNC + Electron + Mono
+# =====================================================================
+
+# Master Architecture Configuration Profiles
+BR2_x86_64=y
+BR2_x86_x86_64=y
+
+# Core Toolchain (Standard GLIBC with full C++ support for V8/Chromium engines)
+BR2_TOOLCHAIN_BUILDROOT_GLIBC=y
+BR2_INSTALL_LIBSTDCPP=y
+BR2_TOOLCHAIN_BUILDROOT_CXX=y
+
+# Stable Embedded Core Init System (Bypasses Systemd Per-Package traps)
+BR2_INIT_SYSV=y
+BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_EUDEV=y
+
+# Linux Kernel Configuration Mapping
+BR2_LINUX_KERNEL=y
+BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
+BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="board/qemu/x86_64/linux.config"
+
+# Graphics Framework Stack (Mesa3D serving Accelerated OpenGL ES & EGL)
+BR2_PACKAGE_MESA3D=y
+BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_VIRGL=y
+BR2_PACKAGE_MESA3D_OPENGL_EGL=y
+BR2_PACKAGE_MESA3D_OPENGL_ES=y
+
+# Wayland & Headless Weston Ecosystem Applications
+BR2_PACKAGE_WAYLAND=y
+BR2_PACKAGE_WESTON=y
+BR2_PACKAGE_WESTON_DEFAULT_COMPOSITOR_DRM=y
+BR2_PACKAGE_WESTON_SIMPLE_CLIENTS=y
+BR2_PACKAGE_WESTON_DEMO_CLIENTS=y
+
+# Remote Network Display Daemon (Kept from previous build)
+# WayVNC Core System Dependencies
+BR2_PACKAGE_LIBVNCSERVER=y
+BR2_PACKAGE_PIXMAN=y
+BR2_PACKAGE_LIBXKBCOMMON=y
+BR2_PACKAGE_WAYVNC=y
+
+# Core Utilities Framework
+BR2_PACKAGE_UTIL_LINUX=y
+BR2_PACKAGE_UTIL_LINUX_BINARIES=y
+
+# =====================================================================
+# The Advanced App Runtime Environment Layer
+# =====================================================================
+# 1. Node.js + NPM (Required to execute and build Electron packages)
+BR2_PACKAGE_NODEJS=y
+BR2_PACKAGE_NODEJS_NPM=y
+
+# 2. C# Mono Open Source .NET Runtime Environment
+BR2_PACKAGE_MONO=y
+
+# Expanded Target Hard Drive Size (2GB to hold node modules and mono assemblies)
+BR2_TARGET_ROOTFS_EXT2=y
+BR2_TARGET_ROOTFS_EXT2_4=y
+BR2_TARGET_ROOTFS_EXT2_SIZE="2G"
+
+# Explicit Weston Rendering Backends
+BR2_PACKAGE_WESTON_HEADLESS=y
+
+BR2_ROOTFS_OVERLAY="board/custom_client/rootfs-overlay"

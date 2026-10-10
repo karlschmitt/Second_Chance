@@ -1,0 +1,31 @@
+#!/bin/sh
+case "$1" in
+  start)
+    echo "Initializing Headless Wayland Engine Canvas..."
+    export XDG_RUNTIME_DIR=/tmp/runtime-root
+    mkdir -p $XDG_RUNTIME_DIR
+    chmod 700 $XDG_RUNTIME_DIR
+    
+    # Fire up Weston silently in the background using modern backend targets
+    weston --backend=headless --width=1024 --height=768 --socket=wayland-0 &
+    sleep 3
+    
+    echo "Exposing Graphical Environment over VNC..."
+    export WAYLAND_DISPLAY=wayland-0
+    wayvnc 0.0.0.0 5900 &
+    sleep 1
+    
+    echo "Verifying App Environments..."
+    echo "Mono Framework Version:" $(mono --version | head -n 1)
+    echo "Node.js Platform Version:" $(node --version)
+    ;;
+  stop)
+    echo "Tearing down system app engines..."
+    killall wayvnc
+    killall weston
+    ;;
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+esac
+exit 0
