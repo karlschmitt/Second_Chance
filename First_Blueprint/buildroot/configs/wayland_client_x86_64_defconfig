@@ -1,0 +1,44 @@
+# QEMU x86_64 Virtual Board Target Layout Mapping
+BR2_x86_64=y
+BR2_x86_x86_64=y
+
+# Toolchain (Standard GLIBC with C++ for Wayland/Electron requirements)
+BR2_TOOLCHAIN_BUILDROOT_GLIBC=y
+BR2_INSTALL_LIBSTDCPP=y
+BR2_TOOLCHAIN_BUILDROOT_CXX=y
+
+# Core Init System Options (SysVinit + Eudev avoids Sandbox Compilation Bugs)
+BR2_INIT_SYSV=y
+BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_EUDEV=y
+
+# Linux Kernel Source (Tied natively to the virtual machine board pipeline)
+BR2_LINUX_KERNEL=y
+BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
+BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="board/qemu/x86_64/linux.config"
+
+# Graphics Framework Stack (Mesa3D serving Accelerated OpenGL ES & EGL)
+BR2_PACKAGE_MESA3D=y
+BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_VIRGL=y
+BR2_PACKAGE_MESA3D_OPENGL_EGL=y
+BR2_PACKAGE_MESA3D_OPENGL_ES=y
+
+# Wayland & Headless Weston Ecosystem Applications
+BR2_PACKAGE_WAYLAND=y
+BR2_PACKAGE_WESTON=y
+BR2_PACKAGE_WESTON_DEFAULT_COMPOSITOR_DRM=y
+BR2_PACKAGE_WESTON_SIMPLE_CLIENTS=y
+BR2_PACKAGE_WESTON_DEMO_CLIENTS=y
+
+# Core Utilities Framework
+BR2_PACKAGE_UTIL_LINUX=y
+BR2_PACKAGE_UTIL_LINUX_BINARIES=y
+
+# Filesystem Packaging Target Limits (Expanded to 1GB to support assets)
+BR2_TARGET_ROOTFS_EXT2=y
+BR2_TARGET_ROOTFS_EXT2_4=y
+BR2_TARGET_ROOTFS_EXT2_SIZE="1G"
+
+# Text Editor & Terminal Multiplexer
+BR2_PACKAGE_VIM=y
+BR2_PACKAGE_TMUX=y
+BR2_ROOTFS_OVERLAY="board/custom_client/rootfs-overlay"
